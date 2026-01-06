@@ -38,4 +38,4 @@ To run this project locally on your machine:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/28407/portfolio
+   git clone https://github.com/28407/My_Portfolio
