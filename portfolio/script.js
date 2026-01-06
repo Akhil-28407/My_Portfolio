@@ -3,24 +3,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const body = document.body;
     const navbar = document.querySelector('.navbar');
     
+    const navThemeToggle = document.querySelector('.nav-theme-toggle');
+
+    const setTheme = (mode) => {
+        const isLight = mode === 'light';
+        body.classList.toggle('light-theme', isLight);
+        if (navbar) navbar.classList.toggle('light-theme', isLight);
+        if (themeToggle) themeToggle.checked = isLight;
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        if (navThemeToggle) {
+            navThemeToggle.setAttribute('aria-pressed', String(isLight));
+            const icon = navThemeToggle.querySelector('i');
+            const label = navThemeToggle.querySelector('.nav-theme-label');
+            if (icon) icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+            if (label) label.textContent = isLight ? 'Light' : 'Dark';
+        }
+    };
+
     const currentTheme = localStorage.getItem('theme') || 'dark';
-    if (currentTheme === 'light') {
-        body.classList.add('light-theme');
-        if (navbar) navbar.classList.add('light-theme');
-        if (themeToggle) themeToggle.checked = true;
-    }
-    
+    setTheme(currentTheme);
+
     if (themeToggle) {
         themeToggle.addEventListener('change', function() {
-            if (this.checked) {
-                body.classList.add('light-theme');
-                if (navbar) navbar.classList.add('light-theme');
-                localStorage.setItem('theme', 'light');
-            } else {
-                body.classList.remove('light-theme');
-                if (navbar) navbar.classList.remove('light-theme');
-                localStorage.setItem('theme', 'dark');
-            }
+            setTheme(this.checked ? 'light' : 'dark');
+        });
+    }
+
+    if (navThemeToggle) {
+        navThemeToggle.addEventListener('click', () => {
+            const nextMode = body.classList.contains('light-theme') ? 'dark' : 'light';
+            setTheme(nextMode);
         });
     }
     
